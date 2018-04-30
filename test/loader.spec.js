@@ -191,7 +191,7 @@ describe('loader', () => {
 						expect(code).not.to.contain('import {');
 						expect(code).not.to.contain('svelte/shared.js');
 					},
-					{},
+					{ shared: false },
 					1
 				)
 			);
@@ -247,7 +247,7 @@ describe('loader', () => {
 					function(err, code, map) {
 						expect(err).not.to.exist;
 
-						expect(code).not.to.match(/require\('.+\.css'\);/);
+						expect(code).not.to.match(/import\s'.+\.css';/);
 					},
 					{}
 				)
@@ -260,7 +260,7 @@ describe('loader', () => {
 					function(err, code, map) {
 						expect(err).not.to.exist;
 
-						expect(code).to.match(/require\('.+\.css'\);/);
+						expect(code).to.match(/import\s'.+\.css';/);
 					},
 					{ emitCss: true }
 				)
@@ -445,7 +445,9 @@ describe('loader', () => {
 					function(err, code, map) {
 						expect(err).not.to.exist;
 
-						expect(code).to.contain(require.resolve('../lib/hot-api.js').replace(/[/\\]/g, '/'));
+						expect(code).to.contain(
+							require.resolve('../lib/hot-api.js').replace(/[/\\]/g, '/')
+						);
 					},
 					{ hotReload: true }
 				)
